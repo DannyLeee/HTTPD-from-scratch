@@ -18,11 +18,9 @@ char webPage[] =
 "<!DOCTYPE html>\r\n"
 "<html><head><title>webServer</title></head>\r\n"
 "<body><center><h3>Welcome to the server</h3><br>\r\n"
-"<img src='test.jpg'/><br>"
-"<<form enctype='multipart/form-data' action='.' method='POST'>"
-"<input type='hidden' name='MAX_FILE_SIZE' value='1000000000000' />"
-"<input name='uploadedfile' type='file' /><br>"
-"<input type='submit' value='Upload File' />"
+"<form enctype='multipart/form-data' action='.' method='POST'>"
+"<input name='text' type='text' /><br>"
+"<input type='submit' />"
 "</form>"
 "</center></body></html>\r\n";
 /*The apperence of web server when browser connnect*/
@@ -80,7 +78,7 @@ int main(int argc, char *argv[]){
 			continue;
 		}
 		
-		printf("Got client connection\n");
+		printf("--------Got client connection--------\n");
 
 		if (!fork()){ //child process
 			close(fd_server);	// child doesn't need
