@@ -128,10 +128,12 @@ int main(){
 			printf("%s\n", bfr);	// print request to terminal
                   printf("-^request^-\n\n");
 
-                  
+                  /*
+                  the stdout of CGI program is redirect to cgiOutput
+                  the stdin  of CGI program is redirect to cgiInput
+                  */
                   //redirect the output from stdout to cgiOutput
                   dup2(cgiOutput[1],STDOUT_FILENO);
-
                   //redirect the input from stdin to cgiInput
                   dup2(cgiInput[0], STDIN_FILENO); 
                   
@@ -139,16 +141,14 @@ int main(){
                   close(cgiInput[0]);
                   close(cgiOutput[1]);
                   
-
-                  /* execute cgi program
-                  the stdout of CGI program is redirect to cgiOutput
-                  the stdin  of CGI program is redirect to cgiInput
-                  */
-                  // execlp("./program.cgi","./program.cgi",NULL);
-                  write(STDOUT_FILENO, webPage, sizeof (webPage) - 1);   /***/
-                  // printf("%s", webPage);
+                  if (strncmp(bfr,"GET /program.cgi",13) == 0) {
+                        // execute cgi program
+                        execlp("./program.cgi","./program.cgi",NULL);
+                  }
+                  else {
+                        write(STDOUT_FILENO, webPage, sizeof (webPage) - 1);   /***/
+                  }
                   close(fd_client);
-			// printf("closing\n");
                   exit(0);
             }
 

@@ -27,7 +27,10 @@ int main(void){
 
 
     // output to stdout
+    printf("HTTP/1.1 200 OK\r\n");
+    printf("Content-Type: text/html; charset=UTF-8\r\n\r\n");
+    printf("<!DOCTYPE html>\r\n");
     printf("<HTML><HEAD><meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">\n");
     printf("<TITLE>I'm a example</TITLE>\n");
-    printf("<BODY>parameter: %s</BODY></HTML>\n",buf);
+    printf("<BODY>%s</BODY></HTML>\n",buf);
 }
