@@ -19,6 +19,7 @@ char webPage[] =
 "<html><head><title>webServer</title></head>\r\n"
 "<body><center><h3>Welcome to the server</h3><br>\r\n"
 "<form enctype='multipart/form-data' action='.' method='POST'>"
+"<img src='test.jpg'>"
 "<input name='text' type='text' /><br>"
 "<input type='submit' />"
 "</form>"
@@ -81,6 +82,7 @@ int main(int argc, char *argv[]){
 		printf("--------Got client connection--------\n");
 
 		if (!fork()){ //child process
+			// printf("this is child process\n");
 			close(fd_server);	// child doesn't need
 			memset(bfr,0,2048);	// reset buf
 			read(fd_client, bfr, 2047);	// read 2047 bytes from fd to buf
@@ -89,13 +91,13 @@ int main(int argc, char *argv[]){
 			if (!strncmp(bfr,"GET /test.jpg",13)){	// find get with test.jpg
 				write(fd_client, imageheader, sizeof(imageheader) - 1);
 				fdimg = open("test.jpg",O_RDONLY);
-				sendfile(fd_client,fdimg,NULL,21000);	// transfer data between file descriptors
+				sendfile(fd_client,fdimg,NULL,156000);	// transfer data between file descriptors
 				close(fdimg);
 			}
 			else if (!strncmp(bfr,"POST /",5)){
 				write(fd_client, imageheader, sizeof(imageheader) - 1);
 				fdimg = open("test.jpg",O_RDONLY);
-				sendfile(fd_client,fdimg,NULL,21000);
+				sendfile(fd_client,fdimg,NULL,156000);
 				close(fdimg);
 				//printf("Get file!\n");
 			}
@@ -107,7 +109,7 @@ int main(int argc, char *argv[]){
 			exit(0);
 		}
 		//parent process
-
+		// printf("this is parent process\n");
 		close(fd_client);
 	}
 

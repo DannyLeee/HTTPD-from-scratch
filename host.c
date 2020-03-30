@@ -141,9 +141,13 @@ int main(){
                   close(cgiInput[0]);
                   close(cgiOutput[1]);
                   
-                  if (strncmp(bfr,"GET /program.cgi",13) == 0) {
+                  if (strncmp(bfr,"GET /program.cgi",16) == 0) {
                         // execute cgi program
                         execlp("./program.cgi","./program.cgi",NULL);
+                  }
+                  else if (strncmp(bfr,"GET /view.cgi",13) == 0) {
+                        // execute cgi view
+                        execlp("./view.cgi","./view.cgi",NULL);
                   }
                   else {
                         write(STDOUT_FILENO, webPage, sizeof (webPage) - 1);   /***/
