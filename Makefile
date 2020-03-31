@@ -1,4 +1,4 @@
-all: Host program view insert
+all: Host program view
 
 CC = gcc
 Host: host.c
@@ -9,9 +9,6 @@ program: program.c
 
 view: view.c
 	$(CC) -o view.cgi view.c
-
-insert: insert.c
-	$(CC) -o insert.cgi insert.c
 
 .PHONY: clean,run
 clean:

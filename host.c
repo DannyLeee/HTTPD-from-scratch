@@ -135,7 +135,7 @@ int main(){
                   //redirect the output from stdout to cgiOutput
                   dup2(cgiOutput[1],STDOUT_FILENO);
                   //redirect the input from stdin to cgiInput
-                  dup2(cgiInput[0], STDIN_FILENO); 
+                  // dup2(cgiInput[0], STDIN_FILENO); 
                   
                   //after redirect we don't need the old fd 
                   close(cgiInput[0]);
@@ -149,10 +149,7 @@ int main(){
                         // execute cgi view
                         execlp("./view.cgi","./view.cgi",NULL);
                   }
-                  else if (strncmp(bfr, "GET /insert.cgi", 15) == 0) {
-                        execlp("./insert.cgi", "./insert.cgi", NULL);
-                  }
-                  else if (strncmp(bfr, "GET / ", 6) == 0) {
+                  else if (strncmp(bfr,"GET /",5) == 0) {
                         write(STDOUT_FILENO, webPage, sizeof (webPage) - 1);   /***/
                   }
                   close(fd_client);
