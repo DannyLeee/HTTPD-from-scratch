@@ -18,7 +18,7 @@ int main(void){
     }
 
 
-    // getchar();
+    getchar();
 
     // output to stdout
     printf("HTTP/1.1 200 OK\r\n");
@@ -47,5 +47,6 @@ int main(void){
     while ((c = fgetc(fp)) != EOF) { // standard C I/O file reading loop
        putchar(c);
     }
+    fclose(fp);
     
 }
