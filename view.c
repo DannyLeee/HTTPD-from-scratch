@@ -18,12 +18,11 @@ int main(void){
     }
 
 
-    getchar();
+    // getchar();
 
     // output to stdout
     printf("HTTP/1.1 200 OK\r\n");
     printf("Content-Type: text/text; charset=UTF-8\r\n\r\n");
-    printf("printf TEST\n");
 
     // buf = (char*)malloc(sizeof(char) * (fsize + 1));
     // read from stdin fd

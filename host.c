@@ -16,7 +16,7 @@
 #include <sys/sendfile.h>
 
 
-#define DEBUG
+// #define DEBUG
 
 /*
 program.c   ---> CGI program
@@ -43,21 +43,11 @@ int main(){
       int cgiInput[2];
       int cgiOutput[2];
       int status;
-      char* inputData={"Hello world"};
+      char* inputData;
       pid_t cpid;
       char c;
 
-      /* Use pipe to create a data channel betweeen two process
-         'cgiInput'  handle  data from 'host' to 'CGI'
-         'cgiOutput' handle data from 'CGI' to 'host'*/
-      if(pipe(cgiInput)<0) {
-            perror("pipe");
-            exit(EXIT_FAILURE);
-      }
-      if(pipe(cgiOutput)<0) {
-            perror("pipe");
-            exit(EXIT_FAILURE);
-      }
+      
 
       /*socket initial*/
       struct sockaddr_in server_addr, client_addr; // the address of the socket(internet format)
@@ -98,6 +88,18 @@ int main(){
 
 
       while(1) {
+            /* Use pipe to create a data channel betweeen two process
+            'cgiInput'  handle  data from 'host' to 'CGI'
+            'cgiOutput' handle data from 'CGI' to 'host'*/
+            if(pipe(cgiInput)<0) {
+                  perror("pipe");
+                  exit(EXIT_FAILURE);
+            }
+            if(pipe(cgiOutput)<0) {
+                  perror("pipe");
+                  exit(EXIT_FAILURE);
+            }
+            
 		fd_client = accept(fd_server, (struct sockaddr *) &client_addr, &sin_len);	// accept a new connection on a socket \
 		做一個跟1st一樣的socket
 		
@@ -128,6 +130,7 @@ int main(){
 			printf("%s\n", bfr);	// print request to terminal
                   printf("-^request^-\n\n");
 
+#ifndef DEBUG
                   /*
                   the stdout of CGI program is redirect to cgiOutput
                   the stdin  of CGI program is redirect to cgiInput
@@ -136,11 +139,13 @@ int main(){
                   dup2(cgiOutput[1],STDOUT_FILENO);
                   //redirect the input from stdin to cgiInput
                   dup2(cgiInput[0], STDIN_FILENO); 
-                  
+#endif            
+
                   //after redirect we don't need the old fd 
                   close(cgiInput[0]);
                   close(cgiOutput[1]);
-                  
+                  close(fd_client);
+
                   if (strncmp(bfr,"GET /program.cgi",16) == 0) {
                         // execute cgi program
                         execlp("./program.cgi","./program.cgi",NULL);
@@ -149,13 +154,15 @@ int main(){
                         // execute cgi view
                         execlp("./view.cgi","./view.cgi",NULL);
                   }
-                  else if (strncmp(bfr, "GET /insert.cgi", 15) == 0) {
-                        execlp("./insert.cgi", "./insert.cgi", NULL);
+                  else if (strncmp(bfr, "GET /insert.cgi?data=", 21) == 0) {
+                        inputData = strtok(bfr, " ");       // GET
+                        inputData = strtok(NULL, " ");      // /insert.cgi?data=...
+                        inputData += 17;
+                        execlp("./insert.cgi", "./insert.cgi", inputData, NULL);
                   }
                   else if (strncmp(bfr, "GET / ", 6) == 0) {
                         write(STDOUT_FILENO, webPage, sizeof (webPage) - 1);   /***/
                   }
-                  close(fd_client);
                   exit(0);
             }
 
@@ -169,7 +176,7 @@ int main(){
                   close(cgiInput[0]);
                   
                   // send the message to the CGI program
-                  write(cgiInput[1], inputData, strlen(inputData));
+                  // write(cgiInput[1], inputData, strlen(inputData));
 
                   // receive the message from the  CGI program
                   while (read(cgiOutput[0], &c, 1) > 0) {
