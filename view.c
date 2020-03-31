@@ -8,56 +8,44 @@
 #include <sys/sendfile.h>
 
 int main(void){
-    int unread = -1;
     char *buf;
-    char c;
-    int fd = open("./DB.txt", O_RDONLY);
-    // FILE *fp = fopen("./DB.txt", "r");
-    if(fd == -1) {
-    // if (!fp) {
+    // int fd = open("./DB.txt", O_RDONLY);
+    FILE *fp = fopen("./DB.txt", "r");
+    // if(fd == -1) {
+    if (!fp) {
         perror("File opening failed");
         return EXIT_FAILURE;
     }
 
-    // get file size by fd
-    // off_t fsize;
-    // fsize = lseek(fd, 0, SEEK_END);
-    
-    // wait for stdin
-    // while(unread<1){
-    //     if(ioctl(STDIN_FILENO,FIONREAD,&unread)){
-    //         perror("ioctl");
-    //         exit(EXIT_FAILURE);
-    //     }
-    // }
 
-    // buf = (char*)malloc(sizeof(char) * (fsize + 1));
-    
-    // printf("fd = %d; fsize = %d; bufsize = %d\n", fd, fsize, sizeof(*buf));
-
-    // read from stdin fd
-    // read(fd,buf,fsize);
-
-    getchar();
+    // getchar();
 
     // output to stdout
     printf("HTTP/1.1 200 OK\r\n");
     printf("Content-Type: text/text; charset=UTF-8\r\n\r\n");
-    printf("TESTtestTEST\n");
-    // printf("<!DOCTYPE html>\r\n");
-    // printf("<HTML><HEAD><meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">\n");
-    // printf("<TITLE>I'm a example</TITLE>\n");
-    // printf("<BODY>%s</BODY></HTML>\n",buf);
+    printf("printf TEST\n");
+
+    // buf = (char*)malloc(sizeof(char) * (fsize + 1));
+    // read from stdin fd
+    // read(fd,buf,fsize);
     // printf("buf: %s", buf);
-    sendfile(STDOUT_FILENO, fd, NULL, 87);
+    
+    // sendfile
+    // sendfile(STDOUT_FILENO, fd, NULL, fsize);
 
+    // fd
+    // get file size by fd
+    // off_t fsize;
+    // fsize = lseek(fd, 0, SEEK_END);
+    // printf("fd = %d; fsize = %d; bufsize = %d\n", fd, fsize, sizeof(*buf));
     // while (read(fd, &c, 1) > 0) {
-    //     write(STDIN_FILENO, &c, 1);
+    //     printf("0");
     // }
 
-    // printf("file: \n");
-    // while (fscanf(fp, "%c", c) != EOF) {
-    //     printf("%c", c);
-    // }
+    // FILE pointer
+    int c; // note: int, not char, required to handle EOF
+    while ((c = fgetc(fp)) != EOF) { // standard C I/O file reading loop
+       putchar(c);
+    }
     
 }
