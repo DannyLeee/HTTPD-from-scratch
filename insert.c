@@ -12,6 +12,7 @@ int main(int argc, char *argv[]){
 
     // write to file
     fputs(argv[1], fp);
+    fputs("\n", fp);
 
     // output to stdout
     printf("HTTP/1.1 200 OK\r\n");
@@ -19,6 +20,6 @@ int main(int argc, char *argv[]){
     printf("<!DOCTYPE html>\r\n");
     printf("<HTML><HEAD><meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">\n");
     printf("<TITLE>Insert complete!!</TITLE>\n");
-    printf("<BODY><center><h1>Inserted</h1>%s", argv[1]);
+    printf("<BODY><center><b>Inserted</b> %s", argv[1]);
     printf("<center></BODY></HTML>\n");  
 }
