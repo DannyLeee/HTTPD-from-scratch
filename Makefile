@@ -1,8 +1,8 @@
 all: Host program view insert
 
 CC = gcc
-Host: host.c
-	$(CC) -o Host host.c
+Host: host.cpp
+	g++ -o Host host.cpp
 
 program: program.c
 	$(CC) -o program.cgi program.c

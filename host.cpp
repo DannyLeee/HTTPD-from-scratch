@@ -13,8 +13,7 @@
 #include <arpa/inet.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <sys/sendfile.h>
-
+#include <string>
 
 // #define DEBUG
 
@@ -33,8 +32,8 @@ char webPage[] =
 "<!DOCTYPE html>\r\n"
 "<html><head><title>webServer</title></head>\r\n"
 "<body><center><h3>Welcome to the 8787 server</h3><br>\r\n"
-"<form enctype='multipart/form-data' action='.' method='POST'>"
-"<input name='text' type='text' /><br>"
+"<form enctype='multipart/form-data' action='insert.cgi' method='POST'>"
+"<input name='data' type='text' /><br>"
 "<input type='submit' />"
 "</form>"
 "</center></body></html>\r\n";
@@ -46,8 +45,6 @@ int main(){
       char* inputData;
       pid_t cpid;
       char c;
-
-      
 
       /*socket initial*/
       struct sockaddr_in server_addr, client_addr; // the address of the socket(internet format)
@@ -99,7 +96,7 @@ int main(){
                   perror("pipe");
                   exit(EXIT_FAILURE);
             }
-            
+
 		fd_client = accept(fd_server, (struct sockaddr *) &client_addr, &sin_len);	// accept a new connection on a socket \
 		做一個跟1st一樣的socket
 		
@@ -160,7 +157,19 @@ int main(){
                         inputData += 17;
                         execlp("./insert.cgi", "./insert.cgi", inputData, NULL);
                   }
-                  else if (strncmp(bfr, "GET / ", 6) == 0) {
+                  else if (strncmp(bfr, "POST /insert.cgi", 16) == 0) {
+                        std::string s = bfr;
+                        std::string::size_type n, m;
+                        n = s.find("name=\"data\"");
+                        n += 15;
+                        m = s.find("WebKitForm", n);
+                        s = s.substr(n,m-n-6);
+                        // printf("HTTP/1.1 200 OK\r\n");
+                        // printf("Content-Type: text/text; charset=UTF-8\r\n\r\n");
+                        // printf("%s\n %d %d\n", s.c_str(), n, m);
+                        execlp("./insert.cgi", "./insert.cgi", s.c_str(), NULL);
+                  }
+                  else {
                         write(STDOUT_FILENO, webPage, sizeof (webPage) - 1);   /***/
                   }
                   exit(0);
@@ -191,7 +200,7 @@ int main(){
                   // connection finish
                   close(cgiOutput[0]);
                   close(cgiInput[1]);
-                  waitpid(cpid, &status, 0);
+                  // waitpid(cpid, &status, 0);
                   printf("parent end\n\n");
                   close(fd_client);
             }
