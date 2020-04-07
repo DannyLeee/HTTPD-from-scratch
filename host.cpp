@@ -34,7 +34,6 @@ int main(){
 	socklen_t sin_len = sizeof(client_addr);  // length of cnt socket	// for the portability
 	int fd_server , fd_client;    // file descriptor // the return value of the soket function
 	char bfr[2048];	// storing the the content sent by the browser to server
-	int fdimg;  //holding fd of file opened
 	int on = 1;
 
 	// open a socket (AF_INET: Internet address. \
@@ -100,16 +99,15 @@ int main(){
 #ifdef DEBUG
 			printf("this is child process\n");
 #endif
-			//close unused fd
-			close(cgiOutput[0]);
 			close(fd_server);	// child doesn't need
-
 			memset(bfr,0,2048);	// reset buf
 			read(fd_client, bfr, 2047);	// read 2047 bytes from fd to buf
 			printf("%s\n", bfr);	// print request to terminal
 #ifdef DEBUG
 			printf("-^request^-\n\n");
 #endif
+			//close unused fd
+			close(cgiOutput[0]);
 #ifndef DEBUG
 			// the STDOUT of CGI program is redirect to cgiOutput
 			//redirect the output from stdout to cgiOutput
