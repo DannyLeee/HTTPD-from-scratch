@@ -14,7 +14,7 @@
 ---
 
 ## 使⽤說明
-* [README](https://github.com/DannyLeee/HTTPD-from-scratch/master/README.md)
+* [README](https://github.com/DannyLeee/HTTPD-from-scratch/blob/master/README.md)
 * step1: 在目錄中執行 `make`
 * step2: 在目錄中執行 `./Host`
 * step3: 在瀏覽器中進入 127.0.0.1:8787 或 localhost:8787 ，即可進入首頁
@@ -262,7 +262,7 @@
 * 每當載入一次頁面時， /favicon.ico 都會被請求一次
     * 這是網頁左上角的圖示請求
 
-> 排版不適請移駕至 [github](https://github.com/DannyLeee/HTTPD-from-scratch/master/report.md)
+> 排版不適請移駕至 [github](https://github.com/DannyLeee/HTTPD-from-scratch/blob/master/report.md)
 
 ### 先連進 127.0.0.1:8787
 * browser 端
@@ -316,8 +316,3 @@
 > 同學的範例
 > > https://youtu.be/Q1bHO4VbUck<br>
 > > https://github.com/zpaylvlz/CCU_network_program/blob/master/webs.c
-
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });
-</script>
